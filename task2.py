@@ -1,3 +1,5 @@
+#Tamar Shuster
+
 import pandas as pd #xxlrd xlrd3 try install
 xl = pd.read_excel("P2M_prof.xlsx", dtype=str)
 
