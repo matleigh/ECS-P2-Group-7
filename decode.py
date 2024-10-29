@@ -1,24 +1,5 @@
 # Hang Yu Chen decode function
 
-import pandas as pd
-
-# Load the Excel data to create the dictionary
-xl = pd.read_excel("P2M012_G7.xlsx")
-bins = list(xl["Bins"])
-chars = list(xl["Chars"])
-
-# Create the dictionary to map binary codes to characters
-compareDict = {}
-for key in bins:
-    for string in chars:
-        # Handle newline characters
-        if string == "\\n":
-            string = "\n"
-        compareDict[key] = string
-        chars.remove(string)
-        break
-
-
 def decode(fn="BinOutput.txt"):
     # Open the file and read the binary data
     with open(fn, 'r') as file:
