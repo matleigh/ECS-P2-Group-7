@@ -53,6 +53,8 @@ def encode(fn):
 
             # Using index to find matching binary code
             bin_output += bin_codes[index]
+        except ValueError:
+            continue
 
 
     total_bits = len(bin_output)  # Total number of bits used
