@@ -25,42 +25,25 @@ for key in bins:
 
         break
 
-"""
-Yavuz Yildiz
-Explanation: This function reads a text file, converts the ‘characters’ to
-binary codes, and writes those codes into a text file.
-"""
-# Global variables that store binary codes and characters
+#Global variables that store binary codes and characters
 bin_codes = []
 chars = []
 
-
-# Encoding the text file
+#Encoding the text file
 def encode(fn):
-    bin_output = ""  # Starts with empty string
-    with open(fn, 'r') as file:  # Is used to read the file
+    bin_output = "" #Starts with empty string
+    with open(fn, 'r') as file: #Is used to read the file
         text = file.read()
-
-    # Loops through each character in the file
-    for i, char in enumerate(text):  # Enumerate provides index 'i'
-        try:
-            # Checking if character length is greater than 1
-            if len(char) > 1:
-                continue  # Skip this iteration if character length is greater than 1
-
-            # Finding the index of the character in the global characters
+    #Loops through each character in the file
+    for char in text:
+        #Finding the index of the character in the global characters
+        if char in chars:
             index = chars.index(char)
-
-            # Using index to find matching binary code
+            #Using index to find matching binary code
             bin_output += bin_codes[index]
-        except ValueError:
-            continue
-
-
-    total_bits = len(bin_output)  # Total number of bits used
-
-    # Write to BinOutput.txt
-    with open('BinOutput.txt', 'w') as file:  # Is used to write the file
+    total_bits = len(bin_output) #Total number of bits used
+    #Write to BinOutput.txt
+    with open('BinOutput.txt', 'w') as file: #Is used to write the file
         file.write(f"{total_bits}.{bin_output}")
 
 # Hang Yu Chen Decode function
