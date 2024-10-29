@@ -1,5 +1,5 @@
 #Tamar Shuster
-
+##goal is to read in excel file and find binary values and characters using dictionary and lists
 import pandas as pd #xxlrd xlrd3 try to install if pandas isn't working
 xl = pd.read_excel("P2M012_G7.xlsx")
 # sets two global variables (bins and chars) to the values set in
@@ -30,7 +30,6 @@ Yavuz Yildiz
 Explanation: This function reads a text file, converts the ‘characters’ to
 binary codes, and writes those codes into a text file.
 """
-
 # Global variables that store binary codes and characters
 bin_codes = []
 chars = []
@@ -39,37 +38,27 @@ chars = []
 # Encoding the text file
 def encode(fn):
     bin_output = ""  # Starts with empty string
-
-    with open(fn, 'r') as file:  # Opens the file for reading
+    with open(fn, 'r') as file:  # Is used to read the file
         text = file.read()
 
-    i = 7  # Initialize index for iterating through text
+    # Loops through each character in the file
+    for i, char in enumerate(text):  # Enumerate provides index 'i'
+        try:
+            # Checking if character length is greater than 1
+            if len(char) > 1:
+                continue  # Skip this iteration if character length is greater than 1
 
-    while i < len(text):    # Iterate through the text
-        match_found = False
+            # Finding the index of the character in the global characters
+            index = chars.index(char)
 
-        # Check for matches in chars with different substring lengths
-        for char in chars:
-            if text[i:i + len(char)] == char:
-                # Finds the index of the multicharacter match
-                index = chars.index(char)
+            # Using index to find matching binary code
+            bin_output += bin_codes[index]
 
-                # Uses index to find the matching binary code
-                bin_output += bin_codes[index]
-
-                # Move index forward by length of matched string
-                i += len(char)
-                match_found = True
-                break  # Exit the loop once a match is found
-
-        # If no match is found, move to the next character
-        if not match_found:
-            i -= 1
 
     total_bits = len(bin_output)  # Total number of bits used
 
     # Write to BinOutput.txt
-    with open('BinOutput.txt', 'w') as file:  # Used to write the file
+    with open('BinOutput.txt', 'w') as file:  # Is used to write the file
         file.write(f"{total_bits}.{bin_output}")
 
 # Hang Yu Chen Decode function
@@ -82,7 +71,8 @@ xl = pd.read_excel("P2M012_G7.xlsx")
 bins = list(xl["Bins"])
 chars = list(xl["Chars"])
 '''
-# Create the dictionary to map binary codes to characters
+
+'''
 compareDict = {}
 for key in bins:
     for string in chars:
@@ -92,8 +82,9 @@ for key in bins:
         compareDict[key] = string
         chars.remove(string)
         break
-
-
+'''
+# Hang Yu Chen
+# Create the dictionary to map binary codes to characters
 def decode(fn="BinOutput.txt"):
     # Open the file and read the binary data
     with open(fn, 'r') as file:
