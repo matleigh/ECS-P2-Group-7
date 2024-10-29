@@ -71,6 +71,9 @@ def encode(fn):
     # Write to BinOutput.txt
     with open('BinOutput.txt', 'w') as file:  # Used to write the file
         file.write(f"{total_bits}.{bin_output}")
+
+# Hang Yu Chen Decode function
+
 '''
 import pandas as pd
 
