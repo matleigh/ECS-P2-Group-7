@@ -24,26 +24,47 @@ for key in bins:
             chars.remove(string)
 
         break
-
-#Global variables that store binary codes and characters
+"""
+Yavuz Yildiz
+Explanation: This function reads a text file, converts the ‘characters’ to
+binary codes, and writes those codes into a text file.
+"""
+# Global variables that store binary codes and characters
 bin_codes = []
 chars = []
 
-#Encoding the text file
+
+# Encoding the text file
 def encode(fn):
-    bin_output = "" #Starts with empty string
-    with open(fn, 'r') as file: #Is used to read the file
+    bin_output = ""  # Starts with an empty string
+
+    with open(fn, 'r') as file:  # Read the file
         text = file.read()
-    #Loops through each character in the file
-    for char in text:
-        #Finding the index of the character in the global characters
-        if char in chars:
-            index = chars.index(char)
-            #Using index to find matching binary code
-            bin_output += bin_codes[index]
-    total_bits = len(bin_output) #Total number of bits used
-    #Write to BinOutput.txt
-    with open('BinOutput.txt', 'w') as file: #Is used to write the file
+
+    # Loops through the text, checking substrings of length > 1
+    i = 0
+    while i < len(text):
+        # Look for the longest match in chars
+        found = False
+        for length in range(len(text), 0, -1):  # Check from longest to shortest
+            if i + length <= len(text):
+                substring = text[i:i + length]
+                if substring in chars:
+                    index = chars.index(substring)
+                    # Append the corresponding binary code
+                    bin_output += bin_codes[index]
+                    i += length  # Move the index forward by the length of the matched substring
+                    found = True
+                    break  # Exit the loop once a match is found
+
+        if not found:
+            # If no match is found, move on to the next character
+            i += 1
+
+    total_bits = len(bin_output)  # Total number of bits used
+
+    # Write to BinOutput.txt
+    with open('BinOutput.txt', 'w') as file:  # Write the output to a file
         file.write(f"{total_bits}.{bin_output}")
 
 # Hang Yu Chen Decode function
