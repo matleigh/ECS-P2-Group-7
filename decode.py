@@ -1,3 +1,5 @@
+# Hang Yu Chen decode function
+
 import pandas as pd
 
 # Load the Excel data to create the dictionary
@@ -45,3 +47,6 @@ def decode(fn="BinOutput.txt"):
     # Write the decoded text to the output file
     with open("TextOutput.txt", 'w') as output_file:
         output_file.write(decoded_text)
+
+# Call the function (optional, for testing purposes)
+# decode()
