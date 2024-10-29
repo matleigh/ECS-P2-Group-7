@@ -1,5 +1,5 @@
 #Tamar Shuster
-
+##goal is to read in excel file and find binary values and characters using dictionary and lists
 import pandas as pd #xxlrd xlrd3 try to install if pandas isn't working
 xl = pd.read_excel("P2M012_G7.xlsx")
 # sets two global variables (bins and chars) to the values set in
@@ -43,7 +43,7 @@ def encode(fn):
     with open(fn, 'r') as file:  # Opens the file for reading
         text = file.read()
 
-    i = 7  # Initialize index for iterating through text
+    i = 0  # Initialize index for iterating through text
 
     while i < len(text):    # Iterate through the text
         match_found = False
@@ -64,7 +64,7 @@ def encode(fn):
 
         # If no match is found, move to the next character
         if not match_found:
-            i -= 1
+            i += 1
 
     total_bits = len(bin_output)  # Total number of bits used
 
@@ -82,7 +82,8 @@ xl = pd.read_excel("P2M012_G7.xlsx")
 bins = list(xl["Bins"])
 chars = list(xl["Chars"])
 '''
-# Create the dictionary to map binary codes to characters
+
+'''
 compareDict = {}
 for key in bins:
     for string in chars:
@@ -92,8 +93,9 @@ for key in bins:
         compareDict[key] = string
         chars.remove(string)
         break
-
-
+'''
+# Hang Yu Chen
+# Create the dictionary to map binary codes to characters
 def decode(fn="BinOutput.txt"):
     # Open the file and read the binary data
     with open(fn, 'r') as file:
