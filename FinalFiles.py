@@ -10,10 +10,11 @@ chars = list(xl["Char"]) #sets characters to list as chars
 compareDict = {} #empty dictionary: compares pairs from bins and chars lists
 
 chars2 = [] # empty list: initializing the end list
+
 for key in bins:
     for string in chars:
         if string == "\\n": #checks if the value in chars is \\n
-            string == ("\n") #sets the value in chars as \n if its \\n
+            string = "\n" #sets the value in chars as \n if its \\n
         compareDict[key]= string #sets pairs from both lists as loop iterates
         chars2.append(string) #makes new lists without \\n
 
@@ -24,47 +25,26 @@ for key in bins:
             chars.remove(string)
 
         break
-"""
-Yavuz Yildiz
-Explanation: This function reads a text file, converts the ‘characters’ to
-binary codes, and writes those codes into a text file.
-"""
-# Global variables that store binary codes and characters
-bin_codes = []
-chars = []
 
+#Global variables that store binary codes and characters
+# bin_codes = []
+# chars = []
 
-# Encoding the text file
+#Encoding the text file
 def encode(fn):
-    bin_output = ""  # Starts with an empty string
-
-    with open(fn, 'r') as file:  # Read the file
+    bin_output = "" #Starts with empty string
+    with open(fn, 'r') as file: #Is used to read the file
         text = file.read()
-
-    # Loops through the text, checking substrings of length > 1
-    i = 0
-    while i < len(text):
-        # Look for the longest match in chars
-        found = False
-        for length in range(len(text), 0, -1):  # Check from longest to shortest
-            if i + length <= len(text):
-                substring = text[i:i + length]
-                if substring in chars:
-                    index = chars.index(substring)
-                    # Append the corresponding binary code
-                    bin_output += bin_codes[index]
-                    i += length  # Move the index forward by the length of the matched substring
-                    found = True
-                    break  # Exit the loop once a match is found
-
-        if not found:
-            # If no match is found, move on to the next character
-            i += 1
-
-    total_bits = len(bin_output)  # Total number of bits used
-
-    # Write to BinOutput.txt
-    with open('BinOutput.txt', 'w') as file:  # Write the output to a file
+    #Loops through each character in the file
+    for char in text:
+        #Finding the index of the character in the global characters
+        if char in chars2:
+            index = chars2.index(char)
+            #Using index to find matching binary code
+            bin_output += str(bins[index])
+    total_bits = len(bin_output) #Total number of bits used
+    #Write to BinOutput.txt
+    with open('BinOutput.txt', 'w') as file: #Is used to write the file
         file.write(f"{total_bits}.{bin_output}")
 
 # Hang Yu Chen Decode function
@@ -93,28 +73,31 @@ for key in bins:
 # Create the dictionary to map binary codes to characters
 def decode(fn="BinOutput.txt"):
     # Open the file and read the binary data
-    with open(fn, 'r') as file:
-        data = file.read()
+    fa = open(fn)
+    data = fa.read()
 
     # Remove any "D." markers from the data
-    cleaned_data = data.replace("D.", "")
+    #cleaned_data = data.replace("21.", "")
+    sep = data.split(".")
+    cleaned_data = sep[1]
 
     decoded_text = ""  # Initialize an empty string to store decoded characters
     i = 0
-
     # Loop through the binary data, decoding each binary code
     while i < len(cleaned_data):
         # Determine the binary code length based on the first bit
-        if cleaned_data[i] == '0':  # Assume '0' indicates a 6-bit character
-            binary_code = cleaned_data[i:i + 6]
-            i += 6
-        else:  # Assume otherwise it's a 4-bit character
-            binary_code = cleaned_data[i:i + 4]
-            i += 4
+        if int(cleaned_data[i]) == 1:  # Assume 1 indicates a 7-bit character
+            binary_code = cleaned_data[i:(i + 7)]
+            i += 7
+            #print(binary_code)
+        else:  # Assume otherwise it's a 5-bit character
+            binary_code = cleaned_data[i:(i + 5)]
+            i += 5
+            #print(binary_code)
 
         # Use compareDict to find the corresponding character
-        character = compareDict.get(binary_code, '?')  # '?' for unknown codes
-        decoded_text += character
+        #character = compareDict.get(binary_code, '?')  # '?' for unknown codes
+        decoded_text += compareDict[int(binary_code)]
 
     # Write the decoded text to the output file
     with open("TextOutput.txt", 'w') as output_file:
@@ -159,3 +142,9 @@ def same(fn1, fn2="TextOutput.txt"):
     else:
         # print that the files are the same
         print("Identical Files")
+
+print(chars2)
+encode("test.txt")
+decode()
+
+
