@@ -1,9 +1,9 @@
 #Tamar Shuster
-##goal is to read in excel file and find binary values and characters using dictionary and lists
+#goal is to read an Excel file and find binary values and characters using dictionary and lists
 import pandas as pd #xxlrd xlrd3 try to install if pandas isn't working
-xl = pd.read_excel("P2M012_G7.xlsx")
+xl = pd.read_excel("P2M012_G7.xlsx", dtype=str)
 # sets two global variables (bins and chars) to the values set in
-# ^the excel file
+# ^the Excel file
 bins = list(xl["Bin"]) #sets binary numbers to list as bins
 chars = list(xl["Char"]) #sets characters to list as chars
 
@@ -13,28 +13,31 @@ chars2 = [] # empty list: initializing the end list
 
 for key in bins:
     for string in chars:
-        if string == "\\n": #checks if the value in chars is \\n
-            string = "\n" #sets the value in chars as \n if its \\n
-        compareDict[key]= string #sets pairs from both lists as loop iterates
-        chars2.append(string) #makes new lists without \\n
+        if string == "\\n": # checks if the value in chars is \\n
+            string = "\n"  #sets the value in chars as \n if its \\n
+        elif string == "<space>": # same as previous applies with space
+            string = " "
+        compareDict[key]= string # sets pairs from both lists as loop iterates
+        chars2.append(string) # makes new lists without \\n
 
-        #below removes \\n from the char list
+        # below removes \\n and <space> from the char list
         if string == "\n":
             chars.remove('\\n')
+        elif string == " ":
+            chars.remove('<space>')
         else:
             chars.remove(string)
-
         break
 
-#Global variables that store binary codes and characters
-# bin_codes = []
-# chars = []
 
-#Encoding the text file
-def encode(fn):
-    bin_output = "" #Starts with empty string
-    with open(fn, 'r') as file: #Is used to read the file
+# Yavuz Yildiz
+# Encoding the text file
+# Text to Binary
+def encode(fn: str):
+    bin_output = "" # Starts with empty string
+    with open(fn, 'r') as file: # Is used to read the file
         text = file.read()
+
     #Loops through each character in the file
     for char in text:
         #Finding the index of the character in the global characters
@@ -47,64 +50,40 @@ def encode(fn):
     with open('BinOutput.txt', 'w') as file: #Is used to write the file
         file.write(f"{total_bits}.{bin_output}")
 
-# Hang Yu Chen Decode function
 
-'''
-import pandas as pd
-
-# Load the Excel data to create the dictionary
-xl = pd.read_excel("P2M012_G7.xlsx")
-bins = list(xl["Bins"])
-chars = list(xl["Chars"])
-'''
-
-'''
-compareDict = {}
-for key in bins:
-    for string in chars:
-        # Handle newline characters
-        if string == "\\n":
-            string = "\n"
-        compareDict[key] = string
-        chars.remove(string)
-        break
-'''
 # Hang Yu Chen
-# Create the dictionary to map binary codes to characters
+# Decoding the binary
+# Binary to text
 def decode(fn="BinOutput.txt"):
     # Open the file and read the binary data
     fa = open(fn)
     data = fa.read()
 
     # Remove any "D." markers from the data
-    #cleaned_data = data.replace("21.", "")
-    sep = data.split(".")
-    cleaned_data = sep[1]
+    period = data.index(".")
+    cleaned_data = data[period+1:]
 
     decoded_text = ""  # Initialize an empty string to store decoded characters
     i = 0
     # Loop through the binary data, decoding each binary code
     while i < len(cleaned_data):
         # Determine the binary code length based on the first bit
-        if int(cleaned_data[i]) == 1:  # Assume 1 indicates a 7-bit character
+        if cleaned_data[i] == '1':  # Assume 1 indicates a 7-bit character
             binary_code = cleaned_data[i:(i + 7)]
             i += 7
-            #print(binary_code)
-        else:  # Assume otherwise it's a 5-bit character
-            binary_code = cleaned_data[i:(i + 5)]
-            i += 5
-            #print(binary_code)
+        else:  # Assume otherwise it's a 6-bit character
+            binary_code = cleaned_data[i:(i + 6)]
+            i += 6
 
         # Use compareDict to find the corresponding character
-        #character = compareDict.get(binary_code, '?')  # '?' for unknown codes
-        decoded_text += compareDict[int(binary_code)]
+        decoded_text += compareDict[binary_code]
 
     # Write the decoded text to the output file
     with open("TextOutput.txt", 'w') as output_file:
         output_file.write(decoded_text)
 
-# Matilda Leighton
 
+# Matilda Leighton
 # function that compares two texts files to see if their characters are the same
 def same(fn1, fn2="TextOutput.txt"):
     # variables for opening and reading each text file
@@ -124,7 +103,8 @@ def same(fn1, fn2="TextOutput.txt"):
         for index, char in enumerate(f1):
             # compare each character in file 1 to the one in file 2 with the corresponding index
             if char != f2[index]:
-                # if the characters are different, create a string variable of the format "N: C1: C2"
+                # if the characters are different, create a string variable of
+                #   the format "N: C1: C2"
                 # N = index, C1 = char in file 1, C2 = char in file 2
                 diff = f"{index}: {char}: {f2[index]}"
                 # add the variable to the list of differences
@@ -143,8 +123,9 @@ def same(fn1, fn2="TextOutput.txt"):
         # print that the files are the same
         print("Identical Files")
 
-print(chars2)
+
 encode("test.txt")
 decode()
+same("test.txt")
 
 
